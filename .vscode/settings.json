@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "flow.coverageSeverity": "error",
+    "flow.logLevel": "error",
+    "flow.useLSP": false,
+    "flow.useNPMPackagedFlow": false,
+    "flow.runOnAllFiles": true,
+    "flow.runOnEdit": false,
+    "flow.showUncovered": true
+}

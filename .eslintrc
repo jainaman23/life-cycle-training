@@ -9,11 +9,12 @@
     "browser": true,
     "jest": true
   },
-  "plugins": ["react", "jsx-a11y", "import"],
+  "plugins": ["react", "jsx-a11y", "import", "flowtype"],
   "rules": {
     "max-len": ["error", { "code": 100 }],
     "prefer-promise-reject-errors": ["off"],
     "react/jsx-filename-extension": ["off"],
-    "no-return-assign": ["off"]
+    "no-return-assign": ["off"],
+    "react/button-has-type": ["off"]
   }
 }

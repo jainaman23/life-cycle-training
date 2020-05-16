@@ -15,7 +15,7 @@ describe('Button Component', () => {
 
   it('Should render children correctly', () => {
     const content = 'Testing';
-    const { container } = renderWithTheme(<Button>{content}</Button>);
+    const { container } = renderWithTheme(<Button variant="icon">{content}</Button>);
     expect(container.querySelector('button').textContent).toEqual(content);
   });
 });

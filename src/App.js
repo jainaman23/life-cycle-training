@@ -1,9 +1,18 @@
 import React from 'react';
+import Filters from './components/molecules/Filters';
 
 function App() {
+  const handleValues = values => {
+    console.log(values);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">Boilerplate is ready</header>
+      <Filters
+        filtersList={['Human', 'Mythology']}
+        getSelectedFilter={handleValues}
+        title="Species"
+      />
     </div>
   );
 }

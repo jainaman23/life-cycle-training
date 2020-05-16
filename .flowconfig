@@ -1,5 +1,8 @@
 [ignore]
 .*/build/*
+.*/src/serviceWorker\.js
+.*/src/index\.js
+.*\.test\.js
 
 [include]
 
@@ -9,5 +12,6 @@
 
 [options]
 esproposal.optional_chaining=enable
+all=false
 
 [strict]
