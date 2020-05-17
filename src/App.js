@@ -1,20 +1,9 @@
 import React from 'react';
-import Filters from './components/molecules/Filters';
+import Layout from './components/organisms/Layout';
+import './styles/styles.scss';
 
 function App() {
-  const handleValues = values => {
-    console.log(values);
-  };
-
-  return (
-    <div className="App">
-      <Filters
-        filtersList={['Human', 'Mythology']}
-        getSelectedFilter={handleValues}
-        title="Species"
-      />
-    </div>
-  );
+  return <Layout />;
 }
 
 export default App;

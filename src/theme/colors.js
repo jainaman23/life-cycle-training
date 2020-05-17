@@ -1,10 +1,9 @@
 export default {
-  primaryColorBlue: '#3639a4',
-  secondaryColorOrange: '#ff7364',
+  secondaryColor: '#976117',
   white: '#fff',
   black: '#000',
-  blueDark: '#302f5b',
-  descriptionColor: '#59597e',
-  iconColorRed: '#ef4131',
-  greyColor: '#f2f4ff',
+  descriptionColor: '#5D5D5D',
+  greyColor: '#333333',
+  backgroundGrey: '#1F232A',
+  bgGrey: '#808080',
 };

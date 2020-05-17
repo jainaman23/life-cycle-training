@@ -37,7 +37,7 @@ const Filters = ({ className, filtersList, title, getSelectedFilter }: Props) =>
           {title}
         </Heading>
       )}
-      {filtersList.map(itm => (
+      {filtersList?.map(itm => (
         <label key={itm} htmlFor={itm}>
           <Input type="checkbox" value={itm} onChange={handleChange} />
           {itm}
