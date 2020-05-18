@@ -10,25 +10,21 @@ const Characters = ({ className, characters }: Props) => {
   return (
     <div className={classnames('characters-list', className)}>
       {characters?.map(itm => (
-        <div className="characters-list__wrapper">
-          <CharacterCard key={itm.id}>
-            <CharacterCard.Figure
-              src={itm?.image}
-              alt={itm.name}
-              title={itm.name}
-              subTitle={`id: ${itm.id}${
-                itm.created ? ` - created ${getPastTime(itm.created)}` : ''
-              }`}
-            />
-            <CharacterCard.Details
-              status={itm.status}
-              species={itm.species}
-              gender={itm.species}
-              origin={itm.origin}
-              location={itm.location}
-            />
-          </CharacterCard>
-        </div>
+        <CharacterCard key={itm.id}>
+          <CharacterCard.Figure
+            src={itm?.image}
+            alt={itm.name}
+            title={itm.name}
+            subTitle={`id: ${itm.id}${itm.created ? ` - created ${getPastTime(itm.created)}` : ''}`}
+          />
+          <CharacterCard.Details
+            status={itm.status}
+            species={itm.species}
+            gender={itm.gender}
+            origin={itm.origin}
+            location={itm.location}
+          />
+        </CharacterCard>
       ))}
     </div>
   );

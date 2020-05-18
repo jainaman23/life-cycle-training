@@ -5,8 +5,9 @@ import { css } from 'styled-components';
 const Styles = css`
   padding: ${props => props.theme.size.remSize(16)};
   border: 1px solid ${props => props.theme.colors.black};
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
+  margin-bottom: ${props => props.theme.size.remSize(16)};
 
   h2,
   input {

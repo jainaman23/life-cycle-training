@@ -59,14 +59,13 @@ describe('Filters Component', () => {
     );
     fireEvent.click(container.querySelector('input'));
     expect(getSelectedValue).toHaveBeenCalled();
-    expect(arr).toHaveLength(1);
-    expect(arr).toContain('Male');
+    expect(arr).toBe('Male');
   });
 
   it('Should remove value of checked items on double click', () => {
     let arr = [];
-    const getSelectedValue = jest.fn().mockImplementation(itm => {
-      arr = itm;
+    const getSelectedValue = jest.fn().mockImplementation((amend, removed) => {
+      arr = removed;
     });
 
     const { container } = renderWithTheme(
@@ -75,6 +74,6 @@ describe('Filters Component', () => {
     fireEvent.click(container.querySelector('input'));
     expect(getSelectedValue).toHaveBeenCalled();
     fireEvent.click(container.querySelector('input'));
-    expect(arr).toHaveLength(0);
+    expect(arr).toBe('Male');
   });
 });

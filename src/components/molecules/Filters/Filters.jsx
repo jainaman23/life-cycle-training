@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import type { Props } from './Filters.props';
@@ -19,15 +19,9 @@ import styles from './Filters.style';
  * @return filter Component
  */
 const Filters = ({ className, filtersList, title, getSelectedFilter }: Props) => {
-  const [value, setValue] = useState([]);
-
   const handleChange = e => {
-    const arr = e.target.checked
-      ? [...value, e.target.value]
-      : value.filter(itm => itm !== e.target.value);
-
-    setValue(arr);
-    getSelectedFilter(arr);
+    if (e.target.checked) getSelectedFilter(e.target.value, null);
+    else getSelectedFilter(null, e.target.value);
   };
 
   return (
@@ -39,7 +33,7 @@ const Filters = ({ className, filtersList, title, getSelectedFilter }: Props) =>
       )}
       {filtersList?.map(itm => (
         <label key={itm} htmlFor={itm}>
-          <Input type="checkbox" value={itm} onChange={handleChange} />
+          <Input type="checkbox" value={itm} name={itm} onChange={handleChange} />
           {itm}
         </label>
       ))}

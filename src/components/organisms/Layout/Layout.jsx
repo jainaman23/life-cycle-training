@@ -6,69 +6,143 @@ import type { Props } from './Layout.props';
 import Filters from '../../molecules/Filters';
 import Search from '../../molecules/Search';
 import Heading from '../../atoms/Heading';
+import Tags from '../../molecules/Tags';
 import Characters from '../Characters';
 import styles from './Layout.style';
 
-const Layout = ({ classname }: Props) => {
+/**
+ * Overall Layout
+ */
+const Layout = ({ className }: Props) => {
   const [data, setData] = useState({});
+  const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState('');
 
-  //   const handleSpeciesFilter = e => {
-  //     const arr = e.target.checked
-  //       ? [...value, e.target.value]
-  //       : value.filter(itm => itm !== e.target.value);
+  /**
+   * Handle Filter
+   *
+   * @param {String} checkedValues Selected filter value
+   * @param {String} removedValues Unselect filter value
+   * @param {String} id Filter ID
+   */
+  const handleFilters = (checkedValues, removedValues, id) => {
+    const filtersObj = { ...filters };
+    if (removedValues) {
+      filtersObj[id] = filtersObj[id]?.filter(itm => itm !== removedValues);
+    } else {
+      filtersObj[id] = filtersObj[id] ? [...filtersObj[id], checkedValues] : [checkedValues];
+    }
 
-  //     setValue(arr);
-  //     getSelectedFilter(arr);
-  //   };
+    setFilters(filtersObj);
+  };
+
+  /**
+   * Handle Search Functionality
+   *
+   * @param {String} value search field value
+   */
+  const handleSearchValue = value => setSearch(value);
+
+  /**
+   * Handle Close Functionality
+   *
+   * @param {String} name Name of selected tag
+   * @param {String} category Category of filter
+   */
+  const handleCloseFilter = (name, category) => {
+    handleFilters(null, name, category);
+    document.getElementsByName(name)[0].checked = false;
+  };
+
+  /**
+   * Handle Sorting Functionality
+   *
+   * @param {String} e event of select
+   */
+  const handleSorting = e => setSort(e.target.value);
+
+  /**
+   * Sorting data asc or dsc.
+   *
+   * @param {Object} content fetched data
+   */
+  const sortedData = content => {
+    let sortedContent = { ...content };
+    if (sort === 'dsc') {
+      sortedContent = sortedContent?.results?.sort((a, b) => b.id - a.id);
+    } else {
+      sortedContent = sortedContent?.results?.sort((a, b) => a.id - b.id);
+    }
+
+    return { ...content, results: sortedContent };
+  };
+
   useEffect(() => {
-    fetch('https://rickandmortyapi.com/api/character/')
-      .then(response => {
-        if (response.status >= 400) {
-          throw new Error('Bad response from server');
-        }
-        return response.json();
-      })
-      .then(stories => {
-        console.log(stories);
-        setData(stories);
-      })
+    const searchfilters = `?${search ? `&name=${search}` : ''}`;
+    const filtersString = Object.keys(filters)
+      .map(itm => `&${filters[itm].map(ftr => `${itm}=${ftr}`).join('&')}`)
+      .join('&');
+
+    fetch(`https://rickandmortyapi.com/api/character/${searchfilters}${filtersString}`)
+      .then(response => response.json())
+      .then(res => sortedData(res))
+      .then(stories => setData(stories))
       .catch(err => {
-        console.log(err);
-        throw new Error('Bad response from server');
+        throw new Error(err.toString());
       });
-  }, []);
+  }, [search, filters]);
+
+  useEffect(() => {
+    setData(sortedData(data));
+  }, [sort]);
 
   return (
-    <div className={classnames('app', classname)}>
+    <div className={classnames('app', className)}>
       <aside className="app__sidebar">
         <Heading type="h2">Filters</Heading>
         <Filters
           filtersList={['Human', 'Mythology', 'Other Species']}
           title="Species"
-          //   getSelectedFilter={handleSpeciesFilter}
+          getSelectedFilter={(amend, remove) => handleFilters(amend, remove, 'species')}
         />
         <Filters
           filtersList={['Male', 'Female']}
           title="Gender"
-          //   getSelectedFilter={handleSpeciesFilter}
+          getSelectedFilter={(amend, remove) => handleFilters(amend, remove, 'gender')}
         />
         <Filters
           filtersList={['Unknown', 'Post-Apocalyptic Earth', 'Nuptia 4', 'Other Origins']}
           title="Origin"
-          //   getSelectedFilter={handleSpeciesFilter}
+          getSelectedFilter={(amend, remove) => handleFilters(amend, remove, 'origin')}
         />
       </aside>
       <div className="app__main">
         <div className="app__sected-filters">
           <Heading type="h2">Selected Filters</Heading>
-          {/* <Tags tags={filters} /> */}
+          <Tags
+            tags={Object.keys(filters)?.reduce((accumulator, currentValue) => {
+              const tagsCategory = filters[currentValue].map(itm => ({
+                category: currentValue,
+                name: itm,
+              }));
+              return [...accumulator, ...tagsCategory];
+            }, [])}
+            getCloseItem={(category, name) => handleCloseFilter(name, category)}
+          />
         </div>
         <div className="app__operations">
-          <Search />
-          {/* <Sorting /> */}
+          <Search title="Search By Name" getValue={handleSearchValue} />
+          <div className="sorting">
+            <select onChange={handleSorting}>
+              <option value="">Sort by Id</option>
+              <option value="asc"> Ascending</option>
+              <option value="dsc">Descending</option>
+            </select>
+          </div>
         </div>
-        <div className="app__characters">
-          <Characters characters={data.results} />
+        <div className="app__characte rs">
+          <Characters characters={data?.results} />
         </div>
       </div>
     </div>

@@ -9,10 +9,11 @@ import styles from './CharacterCard.style';
 
 const CharacterCard = ({ className, children }: Props) => {
   const components = ['CharacterCardDetails', 'CharacterCardFigure'];
+
   if (
-    !children.length > 2 &&
-    (components.containes(children?.[0].displayName) ||
-      components.containes(children?.[1].displayName))
+    children.length > 2 ||
+    !components.includes(children?.[0]?.type.displayName) ||
+    !components.includes(children?.[1]?.type.displayName)
   ) {
     return new Error(
       'CharacterCard component should have CharacterCard.Details or CharacterCard.Figure for Details and Figure respectively',
